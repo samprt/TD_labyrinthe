@@ -15,7 +15,7 @@ void Cell::add_neighb(Cell *c)
 
 	for (int i=0 ; i<m_nb_neighb ; i++)
 	{
-		if (m_neighb[i]=(c))
+		if ((m_neighb[i]=c))
 		{
 			pas_dedans=false;
 		}

@@ -1,7 +1,14 @@
-addons:
-  apt:
-    sources:
-      - george-edison55-precise-backports
-    packages:
-      - cmake-data
-      - cmake
+language: cpp
+complier: gcc
+dist: trusty
+
+before_install:
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
+
+install:
+  - sudo apt-get install -qq g++-6
+
+script:
+  - g++ main.cpp vibes.cpp Cell.cpp -std=c++17 -o main_exe
+  - ./main_exe
