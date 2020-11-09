@@ -1,5 +1,6 @@
 language: cpp
-complier: gcc
+compiler:
+- gcc
 dist: trusty
 
 before_install:
@@ -10,5 +11,8 @@ install:
   - sudo apt-get install -qq g++-6
 
 script:
-  - g++ main.cpp vibes.cpp Cell.cpp -std=c++17 -o main_exe
+  - mkdir build
+  - cd build/
+  - cmake ..
+  - make
   - ./main_exe
