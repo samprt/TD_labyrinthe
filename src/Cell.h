@@ -1,16 +1,29 @@
+#ifndef __CELL_H__
+#define __CELL_H__
 
-class Cell 
+#include <cstdlib>
+#include <iostream>
+
+class Cell
 {
-	public :
-	Cell(int x, int y);
-	Cell();
+  public:
 
-	int m_x;
-	int m_y;
-	int m_nb_neighb = 0;
-	Cell **m_neighb = nullptr;
-	bool m_displayed = false;
+    Cell(int x, int y);
+    ~Cell();
 
-	void add_neighb(Cell *c);
-	void add_neighb(Cell *c1, Cell *c2);
+    void add_neighb(Cell *n1);
+    void add_neighb(Cell *n1, Cell *n2);
+    void add_neighb(Cell *n1, Cell *n2, Cell *n3);
+
+  //protected:
+
+    const int m_x, m_y;
+    int m_nb_neighb = 0;
+    Cell **m_neighb = NULL;
+    bool m_displayed = false;
+    bool m_flag = false;
+
+    friend std::ostream& operator<<(std::ostream& stream, Cell& c);
 };
+
+#endif

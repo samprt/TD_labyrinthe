@@ -81,6 +81,9 @@ namespace vibes {
      * A class to hold any type supported by vibes properties system, an to provide JSON serialization
      */
     class Value {
+        enum value_type_enum{
+            vt_none, vt_integer, vt_string, vt_decimal, vt_array, vt_object
+        } _type;
 
         union {
         int _integer;
@@ -90,10 +93,6 @@ namespace vibes {
         std::string _string;
         std::vector<Value> _array;
 
-        enum value_type_enum{
-            vt_none, vt_integer, vt_string, vt_decimal, vt_array, vt_object
-        } _type;
-        
     public:
         Value() : _type(vt_none) {}
         Value(int i) : _integer(i), _type(vt_integer) {}
@@ -511,15 +510,15 @@ namespace vibes {
     inline void drawBoxes(const std::vector<ibex::IntervalVector> &boxes, Params params){
         std::vector<std::vector<double> > bounds;
         for(unsigned int i=0;i<boxes.size();i++)
-	{
-	    std::vector<double> boundsI;
-	    boundsI.push_back(boxes[i][0].lb());
-	    boundsI.push_back(boxes[i][0].ub());
-	    boundsI.push_back(boxes[i][1].lb());
-	    boundsI.push_back(boxes[i][1].ub());
-	    bounds.push_back(boundsI);
-	}
-	vibes::drawBoxes(bounds, params);
+  {
+      std::vector<double> boundsI;
+      boundsI.push_back(boxes[i][0].lb());
+      boundsI.push_back(boxes[i][0].ub());
+      boundsI.push_back(boxes[i][1].lb());
+      boundsI.push_back(boxes[i][1].ub());
+      bounds.push_back(boundsI);
+  }
+  vibes::drawBoxes(bounds, params);
     }
   #endif //#ifdef __IBEX_INTERVAL_VECTOR_H__
 }

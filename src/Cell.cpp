@@ -1,60 +1,51 @@
 #include "Cell.h"
 
+using namespace std;
+
 Cell::Cell(int x, int y) : m_x(x), m_y(y)
 {
 
 }
-Cell::Cell()
-{
 
+Cell::~Cell()
+{
+  
 }
 
-void Cell::add_neighb(Cell *c)
+void Cell::add_neighb(Cell *n1)
 {
-	bool pas_dedans=true;
+  for(int i = 0 ; i < m_nb_neighb ; i++)
+    if(m_neighb[i] == n1)
+      return;
 
-	for (int i=0 ; i<m_nb_neighb ; i++)
-	{
-		if ((m_neighb[i]=c))
-		{
-			pas_dedans=false;
-		}
-	}
+  m_nb_neighb++;
 
-	if (pas_dedans)
-	{
-		
-		
-		Cell **T=new Cell*[m_nb_neighb+1];
+  Cell **new_neighb = new Cell*[m_nb_neighb];
+  for(int i = 0 ; i < m_nb_neighb - 1 ; i++)
+    new_neighb[i] = m_neighb[i];
 
-		for (int i=0 ; i<m_nb_neighb ; i++)
-		{
-			T[i]=m_neighb[i];
-		}
-		
-		T[m_nb_neighb]=c;
+  new_neighb[m_nb_neighb - 1] = n1;
+  delete[] m_neighb;
+  m_neighb = new_neighb;
 
-		m_nb_neighb+=1;
-
-		delete [] m_neighb;
-
-		m_neighb=new Cell*[m_nb_neighb];
-
-		for (int i=0 ; i<m_nb_neighb ; i++)
-		{
-			m_neighb[i]=T[i];
-		}
-
-		delete [] T;
-
-		c->add_neighb(this);
-		
-	}
-	
+  n1->add_neighb(this);
 }
 
-void Cell::add_neighb(Cell *c1, Cell *c2)
+void Cell::add_neighb(Cell *n1, Cell *n2)
 {
-	add_neighb(c1);
-	add_neighb(c2);
+  add_neighb(n1);
+  add_neighb(n2);
+}
+
+void Cell::add_neighb(Cell *n1, Cell *n2, Cell *n3)
+{
+  add_neighb(n1);
+  add_neighb(n2);
+  add_neighb(n3);
+}
+
+std::ostream& operator<<(std::ostream& stream, Cell& c) 
+{
+  stream << "(" << c.m_x << "," << c.m_y << ")";
+  return stream;
 }
