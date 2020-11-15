@@ -44,8 +44,41 @@ void Cell::add_neighb(Cell *n1, Cell *n2, Cell *n3)
   add_neighb(n3);
 }
 
-std::ostream& operator<<(std::ostream& stream, Cell& c) 
+std::ostream& operator<<(std::ostream& stream, const Cell& c) 
 {
   stream << "(" << c.m_x << "," << c.m_y << ")";
+  return stream;
+}
+
+std::istream& operator>>(std::istream& stream, Cell& c) 
+{
+  int x, y = 0;
+  char str[10];
+
+  stream.ignore(1);
+  stream.get(str, 3, ',');
+  x = stoi(str);
+  stream.ignore(1);
+  stream.get(str, 3, ')');
+  y = stoi(str);
+  c.m_x = x;
+  c.m_y = y;
+
+  stream.ignore(1);
+  stream.get(str, 3, '(');
+  int n = stoi(str);
+
+  for (int i = 0 ; i < n ; i++)
+  {
+    stream.ignore(1);
+    stream.get(str, 3, ',');
+    x = stoi(str);
+    stream.ignore(1);
+    stream.get(str, 3, ')');
+    y = stoi(str);
+  }
+
+
+
   return stream;
 }

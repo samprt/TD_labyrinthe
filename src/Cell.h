@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 
 class Cell
 {
@@ -17,13 +18,15 @@ class Cell
 
   //protected:
 
-    const int m_x, m_y;
+    int m_x, m_y;
     int m_nb_neighb = 0;
     Cell **m_neighb = NULL;
     bool m_displayed = false;
     bool m_flag = false;
+    bool m_saved = false;
 
-    friend std::ostream& operator<<(std::ostream& stream, Cell& c);
+    friend std::ostream& operator<<(std::ostream& stream, const Cell& c);
+    friend std::istream& operator>>(std::istream& stream, Cell& c);
 };
 
 #endif

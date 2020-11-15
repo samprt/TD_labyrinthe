@@ -158,24 +158,21 @@ Maze create_4x4_maze()
   return m;
 }
 
-
-int main()
+void save_cell(Cell *cell, ofstream& f)
 {
-  Maze maze = create_8x8_maze();
-  Path *path = new Path(maze.cf);
+  cell->m_saved = true;
 
-  vibes::beginDrawing();
-  vibes::newFigure("Maze");
-  vibes::setFigureProperties("Maze", vibesParams("x", 200, "y", 200, "width", 700, "height", 700));
-  vibes::axisLimits(0-0.5, 8+0.5, 0-0.5, 8+0.5);
-
-  display(maze);
-  find_path(maze.c0, maze.cf, path);
-  display_path(path);
-  
-  vibes::endDrawing();
-
-  return EXIT_SUCCESS;
+  f << *cell << cell->m_nb_neighb;
+  for(int i = 0 ; i < cell->m_nb_neighb ; i++)
+  {
+      f << *cell->m_neighb[i];
+  }
+  f << "\n";
+  for(int i = 0 ; i < cell->m_nb_neighb ; i++)
+  {
+      if (!cell->m_neighb[i]->m_saved)
+        save_cell(cell->m_neighb[i], f);
+  }
 }
 
 void save_maze(const Maze& maze, const string& file_name)
@@ -186,12 +183,43 @@ void save_maze(const Maze& maze, const string& file_name)
 
   else
   {
-    ofst << "# Start:";
-    ofst << maze.c0;
-    ofst << "# End:";
-    ofst << maze.cf;
+    ofst << "# Start:\n";
+    ofst << *maze.c0;
+    ofst << "\n";
+    ofst << "# End:\n";
+    ofst << *maze.cf;
+    ofst << "\n";
+    ofst << "# Cells:\n";
 
-    
+    save_cell(maze.c0, ofst);
+
     
   }
 }
+
+int main()
+{
+  Maze maze = create_4x4_maze();
+  Path *path = new Path(maze.cf);
+
+  vibes::beginDrawing();
+  vibes::newFigure("Maze");
+  vibes::setFigureProperties("Maze", vibesParams("x", 200, "y", 200, "width", 700, "height", 700));
+  vibes::axisLimits(0-0.5, 8+0.5, 0-0.5, 8+0.5);
+
+  display(maze);
+  find_path(maze.c0, maze.cf, path);
+  display_path(path);
+
+  save_maze(maze, "maze_1.txt");
+
+  Cell *c = new Cell(100, 100);
+  ifstream ifst("lecture_test.txt");
+  ifst >> *c;
+
+
+  vibes::endDrawing();
+
+  return EXIT_SUCCESS;
+}
+
